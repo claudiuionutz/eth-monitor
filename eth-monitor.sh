@@ -13,7 +13,9 @@ fi
 numGPU=`lshw -C display | grep vendor | grep -v Intel | wc -l`
 if [ $numEthMiners -ne $numGPU ]; then
         echo minestop condition: miners=$numEthMiners -ne GPUs=$numGPU>>$LOG
-        /opt/ethos/bin/minestop
+#Come back to this once it is posible to detect that eth-miner is starting
+#        /opt/ethos/bin/minestop
+	sudo shutdown -r now
 else
 #inside loop, test each log file to detect if stuck
 echo looping ...>>$LOG
