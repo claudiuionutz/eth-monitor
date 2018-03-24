@@ -1,5 +1,5 @@
 #!/bin/sh
-LOG=/tmp/eth-monitor/eth-monitor.`date +%F`.log
+LOG=/run/shm/eth-monitor.`date +%F`.log
 
 echo `date` starting montinor execution...>>$LOG
 
