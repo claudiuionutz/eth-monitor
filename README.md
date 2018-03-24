@@ -4,13 +4,22 @@ Create an automated job that will restart the box once it determines that eth-mi
 ## 2. Usage
 So far there is no .rpm/package available so it needst to be manually installed.
 
-  * Download and copy the eth-monitor.sh to a suitable location, like
-  * Grant execution rights to eth-monitor.sh, 
+  * Download and copy the eth-monitor.sh to a suitable location, like /opt and grant execution rights to eth-monitor.sh
 
 ``` bash
+cd /opt
+sudo mkdir eth-monitor
+sudo chown ethos eth-monitor
+cd eth-monitor
+wget https://raw.githubusercontent.com/claudiuionutz/eth-monitor/master/eth-monitor.sh
 chmod +x eth-monitor.sh
 ```
-  * Create crontab to schedule every 10 minutes: 
+
+  * Create cron job using crontab to schedule every 10 minutes: 
+
+```bash
+crontab -e
+```
 
 ``` bash
 */10 * * * * /opt/eth-monitor/eth-monitor.sh >> /run/shm/eth-monitor.log 2>&1
