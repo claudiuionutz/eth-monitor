@@ -30,6 +30,6 @@ Shouldn't run any more frequent as miners will take a few minutes to start. Mayb
 
 ## 3. TODO:
 
-  1. Find suitable location (consider logging) 
+  1. Find suitable log location; /run/shm is being cleaned at restart 
   2. Add looping logic
   3. Consider logrotate
