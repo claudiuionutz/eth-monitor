@@ -13,6 +13,7 @@ sudo chown ethos eth-monitor
 cd eth-monitor
 wget https://raw.githubusercontent.com/claudiuionutz/eth-monitor/master/eth-monitor.sh
 chmod +x eth-monitor.sh
+mkdir logs
 ```
 
   * Create cron job using crontab to schedule every 10 minutes: 
@@ -22,11 +23,11 @@ crontab -e
 ```
 
 ``` bash
-*/10 * * * * /opt/eth-monitor/eth-monitor.sh >> /run/shm/eth-monitor.log 2>&1
+*/10 * * * * /opt/eth-monitor/eth-monitor.sh >> /opt/eth-monitor/logs/eth-monitor.log 2>&1
 ```
 Shouldn't run any more frequent as miners will take a few minutes to start. Maybe a restart condition should always be considered to avoid that. 
 
-  * Optionally you can change log location
+  * Optionally you can change log location, ideally on a separate partition
 
 ## 3. TODO:
 
