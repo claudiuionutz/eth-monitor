@@ -18,7 +18,17 @@ if [ $numEthMiners -ne $numGPU ]; then
 	sudo shutdown -r now
 else
 #inside loop, test each log file to detect if stuck
-echo looping ...>>$LOG
+	echo looping ...>>$LOG
+	for i in `seq 0 $(($numGPU-1))`; do
+		now=`date +%M`
+		lastRun=`tail -n 1 /var/run/miner.$i.output | cut -d: -f2`
+        	delta=$(($now-$lastRun))
+#considering cron scheduling and lshw permormance, condition bellow ought to be enought		
+		if [ "0" -ne $delta ]; then
+                	echo Restart condition detected for miner $i, detail: $lastRun $now $delta>>$LOG
+			sudo shutdown -r now
+        	fi
+	done
 fi
 
 echo `date` monitor completed>>$LOG
