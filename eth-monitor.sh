@@ -1,6 +1,8 @@
 #!/bin/sh
 LOG=/opt/eth-monitor/logs/eth-monitor.`date +%F`.log
 
+#sleep 12 seconds as loggin rate has reducedOD
+sleep 12
 echo `date` starting montinor execution...>>$LOG
 
 numEthMiners=`ps ax | grep ethminer | grep -v grep | wc -l`
