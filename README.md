@@ -31,6 +31,7 @@ Shouldn't run any more frequent as miners will take a few minutes to start. Mayb
 
 ## 3. TODO:
 
-  1. Consider logrotate
-  2. Add more info regarding log size as funtion of time
-  3. Consider an RPM
+  1. AddHost name to log pattern
+  2. Consider logrotate
+  3. Add more info regarding log size as funtion of time
+  4. Consider an RPM
