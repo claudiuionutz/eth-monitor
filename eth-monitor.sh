@@ -30,10 +30,25 @@ if [ $upSec -gt "1800" ]; then
         		delta=$(($now-$lastRun))
 			#considering cron scheduling and lshw permormance, condition bellow ought to be enought		
 			if [ "0" -ne $delta ]; then
-                		echo Restart condition detected for miner $i, detail: $lastRun $now $delta>>$LOG
+                echo Restart condition detected for miner $i, detail: $lastRun $now $delta>>$LOG
 				sudo shutdown -r now
-        		fi
+        	fi
 		done
+		numNVIDIA=`nvidia-smi -L | wc -l`
+		echo loop nvidia ...>>$LOG
+		for j in `seq 0 $(($numNVIDIA-1))`; do
+			tuple=`nvidia-smi -i $j -q -d POWER | grep -E "(Avg|Enforced)" | cut -d':' -f2 | cut -d'.' -f1`
+			enforced=`echo $tuple | cut -d' ' -f1`
+			average=`echo $tuple | cut -d' ' -f2`
+			diff=$(($enforced-$average))
+			if [ $diff -gt "5" ]; then
+				#5 is arbitrary picked as tolerance
+				echo Miner restart condition detected for miner $j, details: $enforced $average $diff>>$LOG
+				minestop
+				minestart
+			fi
+		done
+		
 	fi
 fi
 
