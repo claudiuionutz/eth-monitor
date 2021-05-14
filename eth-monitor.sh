@@ -38,17 +38,24 @@ if [ $upSec -gt "1800" ]; then
 		echo loop nvidia ...>>$LOG
 		for j in `seq 0 $(($numNVIDIA-1))`; do
 			tuple=`nvidia-smi -i $j -q -d POWER | grep -E "(Avg|Enforced)" | cut -d':' -f2 | cut -d'.' -f1`
-			enforced=`echo $tuple | cut -d' ' -f1`
-			average=`echo $tuple | cut -d' ' -f2`
-			diff=$(($enforced-$average))
-			if [ $diff -gt "20" ]; then
-				#20 is arbitrary picked as tolerance
-				echo Miner restart condition detected for miner $j, details: $enforced $average $diff>>$LOG
-				/opt/ethos/bin/minestop
-				/opt/ethos/bin/minestart
-			fi
+			#test for empty string
+            if [ -z "$tuple" ]; then
+            	#restart if empty
+                echo Restart condition detected for GPU $j>>$LOG
+                sudo shutdown -r now
+			else
+				enforced=`echo $tuple | cut -d' ' -f1`
+				average=`echo $tuple | cut -d' ' -f2`
+				diff=$(($enforced-$average))
+				if [ $diff -gt "20" ]; then
+					#20 is arbitrary picked as tolerance
+					echo Miner restart condition detected for miner $j, details: $enforced $average $diff>>$LOG
+					/opt/ethos/bin/minestop
+					/opt/ethos/bin/minestart
+				fi
+            fi
 		done
-		
+
 	fi
 fi
 
