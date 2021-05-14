@@ -9,7 +9,7 @@ upSec=`cat /proc/uptime | cut -d'.' -f1`
 if [ $upSec -gt "1800" ]; then
 	numEthMiners=`ps ax | grep ethminer | grep -v grep | wc -l`
 	if [ "0" -eq $numEthMiners ]; then
-        echo restart condition: number of miners=$numEthMiners>>$LOG
+        	echo restart condition: number of miners=$numEthMiners>>$LOG
 		sudo shutdown -r now
 	fi
 
@@ -27,22 +27,22 @@ if [ $upSec -gt "1800" ]; then
 		for i in `seq 0 $(($numGPU-1))`; do
 			now=`date +%M`
 			lastRun=`tail -n 1 /var/run/miner.$i.output | cut -d: -f2`
-        	delta=$(($now-$lastRun))
+        		delta=$(($now-$lastRun))
 			#considering cron scheduling and lshw permormance, condition bellow ought to be enought		
 			if [ "0" -ne $delta ]; then
-                echo Restart condition detected for miner $i, detail: $lastRun $now $delta>>$LOG
+                		echo Restart condition detected for miner $i, detail: $lastRun $now $delta>>$LOG
 				sudo shutdown -r now
-        	fi
+        		fi
 		done
 		numNVIDIA=`nvidia-smi -L | wc -l`
 		echo loop nvidia ...>>$LOG
 		for j in `seq 0 $(($numNVIDIA-1))`; do
 			tuple=`nvidia-smi -i $j -q -d POWER | grep -E "(Avg|Enforced)" | cut -d':' -f2 | cut -d'.' -f1`
 			#test for empty string
-            if [ -z "$tuple" ]; then
-            	#restart if empty
-                echo Restart condition detected for GPU $j>>$LOG
-                sudo shutdown -r now
+            		if [ -z "$tuple" ]; then
+            			#restart if empty
+                		echo Restart condition detected for GPU $j>>$LOG
+                		sudo shutdown -r now
 			else
 				enforced=`echo $tuple | cut -d' ' -f1`
 				average=`echo $tuple | cut -d' ' -f2`
@@ -53,7 +53,7 @@ if [ $upSec -gt "1800" ]; then
 					/opt/ethos/bin/minestop
 					/opt/ethos/bin/minestart
 				fi
-            fi
+			fi
 		done
 
 	fi
