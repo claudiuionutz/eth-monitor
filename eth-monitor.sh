@@ -41,8 +41,8 @@ if [ $upSec -gt "1800" ]; then
 			enforced=`echo $tuple | cut -d' ' -f1`
 			average=`echo $tuple | cut -d' ' -f2`
 			diff=$(($enforced-$average))
-			if [ $diff -gt "7" ]; then
-				#7 is arbitrary picked as tolerance
+			if [ $diff -gt "20" ]; then
+				#20 is arbitrary picked as tolerance
 				echo Miner restart condition detected for miner $j, details: $enforced $average $diff>>$LOG
 				/opt/ethos/bin/minestop
 				/opt/ethos/bin/minestart
